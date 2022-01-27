@@ -1,0 +1,24 @@
+name: 'catalog-release-bot'
+description: 'Automate OLM catalog releases'
+branding:
+  icon: 'check-circle'
+  color: 'red'
+inputs:
+  repoToken:
+    description: 'Token to use for authenticating requests to GitHub'
+    default: ${{ github.token }}
+    required: false
+  catalogDir:
+    description: "Directory containing package's file-based catalog"
+    required: true
+  packageName:
+    description: 'Name of the package to update in the catalog'
+    required: true
+runs:
+  using: 'docker'
+  image: 'docker://gcr.io/lanford-io/catalog-release-bot:latest'
+  env:
+    GITHUB_TOKEN: ${{ inputs.repoToken }}
+    CATALOG_DIR: ${{ inputs.catalogDir }}
+    PACKAGE_NAME: ${{ inputs.packageName }}
+  args: ["action"]
